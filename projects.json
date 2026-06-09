@@ -2,37 +2,145 @@
   {
     "status": "complete",
     "title": "FIRST Louisiana-Mississippi Information System",
+    "slug": "first-la-ms",
     "summary": "Designed and built a relational database system to manage team data, event scheduling, and registration across the LA-MS FIRST Robotics region.",
     "tools": ["SQL", "ER Modeling", "Database Design", "Data Normalization"],
     "role": "Solo — CIS coursework",
     "year": "2024",
-    "link": ""
+    "tabs": [
+      {
+        "id": "documents",
+        "label": "Documents",
+        "type": "links",
+        "content": [
+          {
+            "title": "Project write-up",
+            "description": "Full project documentation including schema design, ER diagram, and queries.",
+            "url": "",
+            "type": "pdf"
+          },
+          {
+            "title": "Google Doc",
+            "description": "Working document with notes and process details.",
+            "url": "",
+            "type": "doc"
+          }
+        ]
+      },
+      {
+        "id": "reflection",
+        "label": "Reflection",
+        "type": "text",
+        "content": "Add your reflection here — what you learned, what you'd do differently, why this project matters to your goals. Edit this in projects.json under the FIRST project, reflection tab."
+      }
+    ]
   },
   {
     "status": "complete",
     "title": "Lending Club Loan Analysis",
+    "slug": "lending-club",
     "summary": "Analyzed a 10k+ row loan dataset to identify default risk patterns and borrower profiles using pivot tables, dashboards, and summary charts.",
     "tools": ["Excel", "Pivot Tables", "Financial Analysis", "Data Visualization"],
     "role": "Solo analyst",
     "year": "2024",
-    "link": ""
+    "tabs": [
+      {
+        "id": "raw-data",
+        "label": "Raw data",
+        "type": "links",
+        "content": [
+          {
+            "title": "Raw dataset",
+            "description": "Original Lending Club loan data before cleaning.",
+            "url": "",
+            "type": "file"
+          }
+        ]
+      },
+      {
+        "id": "cleaned-data",
+        "label": "Cleaned data",
+        "type": "links",
+        "content": [
+          {
+            "title": "Cleaned dataset",
+            "description": "Data after removing nulls, standardizing fields, and filtering outliers.",
+            "url": "",
+            "type": "file"
+          }
+        ]
+      },
+      {
+        "id": "dashboard",
+        "label": "Dashboard",
+        "type": "links",
+        "content": [
+          {
+            "title": "Excel dashboard",
+            "description": "Pivot table dashboard showing default rates, loan grades, and borrower profiles.",
+            "url": "",
+            "type": "file"
+          }
+        ]
+      },
+      {
+        "id": "takeaways",
+        "label": "Takeaways",
+        "type": "text",
+        "content": "Add your key findings and takeaways here — what patterns emerged, what surprised you, what you'd recommend. Edit this in projects.json under the Lending Club project, takeaways tab."
+      }
+    ]
   },
   {
     "status": "in-progress",
     "title": "Robotics Matchmaking Data Pipeline",
+    "slug": "robotics-pipeline",
     "summary": "End-to-end Python pipeline ingesting live match data from The Blue Alliance API for the Arkansas Regional FIRST competition. Outputs SQL-ready tables and KPI reports.",
     "tools": ["Python", "Pandas", "REST API", "SQL", "KPI Design"],
     "role": "Solo — summer project",
     "year": "2025",
-    "link": ""
+    "tabs": [
+      {
+        "id": "overview",
+        "label": "Overview",
+        "type": "text",
+        "content": "Describe the project goals, architecture, and current state here. What problem does this solve? How does the pipeline work end-to-end? Edit this in projects.json under the Robotics project, overview tab."
+      },
+      {
+        "id": "progress",
+        "label": "Progress",
+        "type": "updates",
+        "content": [
+          {
+            "date": "2025-06-08",
+            "title": "Week 1 — Project kickoff",
+            "body": "Write your first update here. What did you set up? What decisions did you make? What's the plan for next week? Edit this entry in projects.json under the robotics project, progress tab."
+          }
+        ]
+      },
+      {
+        "id": "data-output",
+        "label": "Data & output",
+        "type": "links",
+        "content": [
+          {
+            "title": "GitHub repository",
+            "description": "Source code for the pipeline.",
+            "url": "",
+            "type": "github"
+          }
+        ]
+      }
+    ]
   },
   {
     "status": "planned",
     "title": "Your next project title here",
-    "summary": "Describe what you're planning to build or learn. This is a placeholder — edit projects.json to replace it.",
+    "slug": "next-project",
+    "summary": "Describe what you're planning to build or learn. Edit projects.json to replace this.",
     "tools": ["Add", "Your", "Tools"],
     "role": "Your role",
     "year": "2026",
-    "link": ""
+    "tabs": []
   }
 ]

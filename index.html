@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Charity — Portfolio</title>
+<title>Charity Eiland — Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -49,422 +49,177 @@
     top: 0;
     z-index: 100;
   }
-
-  .topbar-name {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--ink);
-  }
-
-  .topbar-divider {
-    width: 1px;
-    height: 16px;
-    background: var(--border);
-  }
-
-  .topbar-sub {
-    font-size: 13px;
-    color: var(--ink-faint);
-  }
-
-  .topbar-links {
-    margin-left: auto;
-    display: flex;
-    gap: 20px;
-  }
-
+  .topbar-name { font-size: 15px; font-weight: 600; color: var(--ink); }
+  .topbar-divider { width: 1px; height: 16px; background: var(--border); }
+  .topbar-sub { font-size: 13px; color: var(--ink-faint); }
+  .topbar-links { margin-left: auto; display: flex; gap: 20px; }
   .topbar-link {
-    font-size: 13px;
-    color: var(--ink-muted);
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.15s;
+    font-size: 13px; color: var(--ink-muted); text-decoration: none;
+    font-weight: 500; transition: color 0.15s; cursor: pointer; background: none; border: none;
   }
   .topbar-link:hover { color: var(--pink); }
   .topbar-link.active { color: var(--pink); }
 
   /* ── Layout ── */
-  .layout {
-    display: flex;
-    flex: 1;
-  }
+  .layout { display: flex; flex: 1; }
 
-  /* ── Sidebar / file tree ── */
+  /* ── Sidebar ── */
   .sidebar {
-    width: 240px;
-    flex-shrink: 0;
-    background: var(--sidebar-bg);
-    border-right: 1px solid var(--border);
-    padding: 20px 0;
-    overflow-y: auto;
-    position: sticky;
-    top: 52px;
-    height: calc(100vh - 52px);
+    width: 240px; flex-shrink: 0; background: var(--sidebar-bg);
+    border-right: 1px solid var(--border); padding: 20px 0;
+    overflow-y: auto; position: sticky; top: 52px; height: calc(100vh - 52px);
   }
-
   .tree-label {
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--ink-faint);
-    padding: 0 16px 8px;
+    font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--ink-faint); padding: 0 16px 8px;
   }
 
-  .tree-folder {
-    margin-bottom: 2px;
+  /* folder rows */
+  .tree-row {
+    display: flex; align-items: center; gap: 5px;
+    padding: 5px 16px; cursor: pointer; font-size: 13px;
+    font-weight: 500; color: var(--ink-muted); transition: background 0.12s, color 0.12s;
+    background: none; border: none; width: 100%; text-align: left; font-family: 'Inter', system-ui, sans-serif;
   }
+  .tree-row:hover { background: var(--border); color: var(--ink); }
+  .tree-row.active { background: var(--pink-light); color: var(--pink); font-weight: 500; border-right: 2px solid var(--pink); }
 
-  .tree-folder-btn {
-    width: 100%;
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 16px;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--ink-muted);
-    text-align: left;
-    transition: background 0.12s, color 0.12s;
-    border-radius: 0;
+  .chevron {
+    width: 12px; height: 12px; flex-shrink: 0;
+    transition: transform 0.15s; color: var(--ink-faint);
   }
-  .tree-folder-btn:hover { background: var(--border); color: var(--ink); }
-  .tree-folder-btn.open { color: var(--ink); }
+  .chevron.open { transform: rotate(90deg); }
 
-  .folder-icon {
-    width: 15px;
-    height: 15px;
-    flex-shrink: 0;
-    transition: transform 0.15s;
-  }
-  .tree-folder-btn.open .folder-icon { transform: rotate(90deg); }
-
-  .folder-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    margin-right: 2px;
-  }
+  .folder-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
   .dot-complete   { background: #6DBF9F; }
   .dot-inprogress { background: #E8A87C; }
   .dot-planned    { background: var(--pink-mid); }
+  .dot-tab        { background: var(--border); }
 
-  .tree-children {
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 0.2s ease;
-  }
-  .tree-children.open { max-height: 600px; }
+  .tree-children { overflow: hidden; max-height: 0; transition: max-height 0.22s ease; }
+  .tree-children.open { max-height: 2000px; }
 
-  .tree-item {
-    display: block;
-    width: 100%;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 5px 16px 5px 36px;
-    font-size: 12px;
-    color: var(--ink-muted);
-    text-align: left;
-    font-family: 'Inter', system-ui, sans-serif;
-    transition: background 0.12s, color 0.12s;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    border-radius: 0;
-  }
-  .tree-item:hover { background: var(--border); color: var(--ink); }
-  .tree-item.active {
-    background: var(--pink-light);
-    color: var(--pink);
-    font-weight: 500;
-    border-right: 2px solid var(--pink);
-  }
+  /* indent levels */
+  .depth-1 { padding-left: 28px; font-size: 12px; font-weight: 400; }
+  .depth-2 { padding-left: 42px; font-size: 12px; font-weight: 400; }
+  .depth-3 { padding-left: 56px; font-size: 11px; font-weight: 400; color: var(--ink-faint); }
 
-  /* ── Main content ── */
-  .main {
-    flex: 1;
-    padding: 40px 48px;
-    min-width: 0;
-  }
-
-  /* Home / about panel */
+  /* ── Main ── */
+  .main { flex: 1; padding: 40px 48px; min-width: 0; }
   .panel { display: none; }
   .panel.visible { display: block; }
 
-  .home-greeting {
-    font-size: 26px;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 6px;
-    letter-spacing: -0.3px;
-  }
-
-  .home-greeting span {
-    color: var(--pink);
-  }
-
-  .home-tagline {
-    font-size: 15px;
-    color: var(--ink-muted);
-    margin-bottom: 36px;
-    max-width: 520px;
-  }
-
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    max-width: 640px;
-    margin-bottom: 36px;
-  }
-
-  .about-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 18px 20px;
-  }
-
-  .about-card-label {
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.9px;
-    color: var(--ink-faint);
-    margin-bottom: 6px;
-  }
-
-  .about-card-value {
-    font-size: 14px;
-    color: var(--ink);
-    font-weight: 500;
-    line-height: 1.5;
-  }
-
-  .about-card-value a {
-    color: var(--pink);
-    text-decoration: none;
-  }
-  .about-card-value a:hover { text-decoration: underline; }
-
-  .skill-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 4px;
-  }
-
-  .skill-tag {
-    font-size: 12px;
-    font-weight: 500;
-    background: var(--pink-light);
-    color: var(--pink);
-    border-radius: 4px;
-    padding: 3px 9px;
-  }
-
-  /* Project panel */
-  .project-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 8px;
-  }
-
-  .project-title {
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--ink);
-    letter-spacing: -0.2px;
-    line-height: 1.3;
-  }
-
-  .status-badge {
-    font-size: 11px;
-    font-weight: 600;
-    padding: 4px 12px;
-    border-radius: 20px;
-    white-space: nowrap;
-    flex-shrink: 0;
-    margin-top: 4px;
-  }
-  .badge-complete   { background: #EAF7F1; color: #3A9A72; }
-  .badge-in-progress { background: #FEF4EC; color: #C07540; }
-  .badge-planned    { background: var(--pink-light); color: var(--pink); }
-
-  .project-meta-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
-    margin: 20px 0;
-    padding: 16px 0;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .meta-item { display: flex; flex-direction: column; gap: 2px; }
-
-  .meta-label {
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.9px;
-    color: var(--ink-faint);
-  }
-
-  .meta-value {
-    font-size: 13px;
-    font-family: 'JetBrains Mono', monospace;
-    color: var(--ink);
-    font-weight: 500;
-  }
-
-  .project-summary {
-    font-size: 15px;
-    color: var(--ink-muted);
-    line-height: 1.75;
-    margin-bottom: 24px;
-    max-width: 640px;
-  }
-
-  .tools-label {
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.9px;
-    color: var(--ink-faint);
-    margin-bottom: 10px;
-  }
-
-  .tools-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-    margin-bottom: 28px;
-  }
-
-  .tool-tag {
-    font-size: 12px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--ink-muted);
-    border-radius: 4px;
-    padding: 4px 10px;
-    font-weight: 500;
-  }
-
-  .project-link-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 9px 18px;
-    background: var(--pink);
-    color: #fff;
-    border-radius: var(--radius);
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    transition: opacity 0.15s;
-  }
-  .project-link-btn:hover { opacity: 0.88; }
-
-  /* Status overview panel */
-  .status-header {
-    margin-bottom: 28px;
-  }
-
-  .status-title {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 4px;
-  }
-
-  .status-desc {
-    font-size: 14px;
-    color: var(--ink-muted);
-  }
-
-  .project-card-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .proj-summary-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 18px 22px;
-    cursor: pointer;
-    transition: box-shadow 0.15s, border-color 0.15s;
-    border-left: 3px solid var(--pink);
-  }
-  .proj-summary-card:hover {
-    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
-    border-color: var(--pink-mid);
-  }
-
-  .psc-title {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 4px;
-  }
-
-  .psc-summary {
-    font-size: 13px;
-    color: var(--ink-muted);
-    line-height: 1.55;
-    margin-bottom: 10px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .psc-tools {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-  }
-
-  .psc-tool {
-    font-size: 11px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--ink-faint);
-    border-radius: 3px;
-    padding: 2px 7px;
-  }
-
-  /* Breadcrumb */
+  /* breadcrumb */
   .breadcrumb {
-    font-size: 12px;
-    color: var(--ink-faint);
-    margin-bottom: 28px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    font-size: 12px; color: var(--ink-faint); margin-bottom: 28px;
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
   }
-  .bc-link {
-    cursor: pointer;
-    text-decoration: none;
-    color: var(--ink-faint);
-    transition: color 0.12s;
-  }
+  .bc-link { cursor: pointer; color: var(--ink-faint); transition: color 0.12s; }
   .bc-link:hover { color: var(--pink); }
   .bc-sep { color: var(--border); }
   .bc-current { color: var(--ink-muted); }
 
-  /* Responsive */
+  /* home */
+  .home-greeting { font-size: 26px; font-weight: 600; color: var(--ink); margin-bottom: 6px; letter-spacing: -0.3px; }
+  .home-greeting span { color: var(--pink); }
+  .home-tagline { font-size: 15px; color: var(--ink-muted); margin-bottom: 36px; max-width: 520px; }
+
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 640px; margin-bottom: 24px; }
+  .about-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px 20px; }
+  .about-card-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.9px; color: var(--ink-faint); margin-bottom: 6px; }
+  .about-card-value { font-size: 14px; color: var(--ink); font-weight: 500; line-height: 1.55; }
+  .about-card-value a { color: var(--pink); text-decoration: none; }
+  .about-card-value a:hover { text-decoration: underline; }
+
+  .skill-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+  .skill-tag { font-size: 12px; font-weight: 500; background: var(--pink-light); color: var(--pink); border-radius: 4px; padding: 3px 9px; }
+
+  /* status overview */
+  .status-title { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+  .status-desc { font-size: 14px; color: var(--ink-muted); margin-bottom: 28px; }
+  .proj-card-list { display: flex; flex-direction: column; gap: 12px; }
+  .proj-summary-card {
+    background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--pink);
+    border-radius: var(--radius-lg); padding: 18px 22px; cursor: pointer; transition: box-shadow 0.15s;
+  }
+  .proj-summary-card:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.07); }
+  .psc-title { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .psc-summary { font-size: 13px; color: var(--ink-muted); line-height: 1.55; margin-bottom: 10px; }
+  .psc-tools { display: flex; flex-wrap: wrap; gap: 5px; }
+  .psc-tool { font-size: 11px; background: var(--bg); border: 1px solid var(--border); color: var(--ink-faint); border-radius: 3px; padding: 2px 7px; }
+
+  /* project header */
+  .project-title { font-size: 22px; font-weight: 600; color: var(--ink); letter-spacing: -0.2px; line-height: 1.3; margin-bottom: 6px; }
+  .project-meta-row {
+    display: flex; flex-wrap: wrap; gap: 24px; margin: 16px 0;
+    padding: 16px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+  .meta-item { display: flex; flex-direction: column; gap: 2px; }
+  .meta-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.9px; color: var(--ink-faint); }
+  .meta-value { font-size: 13px; font-family: 'JetBrains Mono', monospace; color: var(--ink); font-weight: 500; }
+  .tools-row { display: flex; flex-wrap: wrap; gap: 7px; margin: 16px 0 24px; }
+  .tool-tag { font-size: 12px; background: var(--bg); border: 1px solid var(--border); color: var(--ink-muted); border-radius: 4px; padding: 4px 10px; font-weight: 500; }
+
+  /* status badges */
+  .status-badge { font-size: 11px; font-weight: 600; padding: 3px 11px; border-radius: 20px; display: inline-block; }
+  .badge-complete    { background: #EAF7F1; color: #3A9A72; }
+  .badge-in-progress { background: #FEF4EC; color: #C07540; }
+  .badge-planned     { background: var(--pink-light); color: var(--pink); }
+
+  /* tab nav */
+  .tab-nav {
+    display: flex; gap: 0; border-bottom: 2px solid var(--border);
+    margin-bottom: 28px; overflow-x: auto;
+  }
+  .tab-btn {
+    padding: 10px 18px; font-size: 13px; font-weight: 500; color: var(--ink-muted);
+    background: none; border: none; border-bottom: 2px solid transparent;
+    margin-bottom: -2px; cursor: pointer; white-space: nowrap; transition: color 0.15s;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  .tab-btn:hover { color: var(--ink); }
+  .tab-btn.active { color: var(--pink); border-bottom-color: var(--pink); }
+
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+
+  /* text tab */
+  .text-content {
+    font-size: 15px; color: var(--ink-muted); line-height: 1.8;
+    max-width: 640px; white-space: pre-wrap;
+  }
+
+  /* links tab */
+  .links-list { display: flex; flex-direction: column; gap: 10px; max-width: 600px; }
+  .link-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 16px 20px; display: flex; align-items: center; gap: 14px;
+    text-decoration: none; transition: box-shadow 0.15s, border-color 0.15s;
+  }
+  .link-card:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.06); border-color: var(--pink-mid); }
+  .link-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--pink-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .link-icon svg { width: 18px; height: 18px; color: var(--pink); }
+  .link-info { flex: 1; min-width: 0; }
+  .link-title { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+  .link-desc { font-size: 12px; color: var(--ink-faint); }
+  .link-empty { font-size: 13px; color: var(--ink-faint); font-style: italic; }
+
+  /* updates tab */
+  .updates-list { display: flex; flex-direction: column; gap: 10px; max-width: 640px; }
+  .update-card {
+    background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--pink);
+    border-radius: var(--radius-lg); padding: 16px 20px; cursor: pointer; transition: box-shadow 0.15s;
+  }
+  .update-card:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+  .update-date { font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--ink-faint); margin-bottom: 3px; }
+  .update-title { font-size: 14px; font-weight: 600; color: var(--ink); }
+
+  /* update detail page */
+  .update-date-lg { font-size: 12px; font-family: 'JetBrains Mono', monospace; color: var(--ink-faint); margin-bottom: 6px; }
+  .update-title-lg { font-size: 20px; font-weight: 600; color: var(--ink); margin-bottom: 20px; }
+  .update-body { font-size: 15px; color: var(--ink-muted); line-height: 1.8; max-width: 640px; white-space: pre-wrap; }
+
+  /* responsive */
   @media (max-width: 720px) {
     .sidebar { display: none; }
     .main { padding: 28px 20px; }
@@ -475,71 +230,45 @@
 </head>
 <body>
 
-<!-- Top bar -->
 <header class="topbar">
-  <span class="topbar-name">Charity</span>
+  <span class="topbar-name">Charity Eiland</span>
   <div class="topbar-divider"></div>
   <span class="topbar-sub">Data Analytics</span>
   <nav class="topbar-links">
-    <a href="#" class="topbar-link active" onclick="showHome(event)">Home</a>
-    <a href="#" class="topbar-link" onclick="showStatus(event,'complete')">Complete</a>
-    <a href="#" class="topbar-link" onclick="showStatus(event,'in-progress')">In progress</a>
-    <a href="#" class="topbar-link" onclick="showStatus(event,'planned')">Planned</a>
+    <button class="topbar-link active" onclick="showHome()">Home</button>
+    <button class="topbar-link" onclick="showStatus('complete')">Complete</button>
+    <button class="topbar-link" onclick="showStatus('in-progress')">In progress</button>
+    <button class="topbar-link" onclick="showStatus('planned')">Planned</button>
   </nav>
 </header>
 
 <div class="layout">
-
-  <!-- Sidebar file tree -->
   <nav class="sidebar" id="sidebar">
     <div class="tree-label">Projects</div>
     <div id="tree-root"></div>
   </nav>
 
-  <!-- Main content -->
   <main class="main" id="main-content">
-
-    <!-- Home panel -->
     <div class="panel visible" id="panel-home">
-      <div class="home-greeting">Hi, I'm <span>Charity.</span></div>
-      <p class="home-tagline">
-        Junior at Louisiana Tech studying Computer Information Systems with a Data Analytics certification.
-        I build pipelines, find patterns in data, and turn raw numbers into something useful.
-      </p>
-
+      <div class="home-greeting">Hi, I'm <span>Charity Eiland.</span></div>
+      <p class="home-tagline">Junior at Louisiana Tech studying Computer Information Systems with a Data Analytics certification. I build pipelines, find patterns in data, and turn raw numbers into something useful.</p>
       <div class="about-grid">
         <div class="about-card">
           <div class="about-card-label">Education</div>
-          <div class="about-card-value">
-            B.S. Computer Information Systems<br>
-            <span style="font-size:12px;color:var(--ink-faint)">Louisiana Tech · Expected May 2027</span>
-          </div>
+          <div class="about-card-value">B.S. Computer Information Systems<br><span style="font-size:12px;color:var(--ink-faint)">Louisiana Tech · Expected May 2027</span></div>
         </div>
         <div class="about-card">
           <div class="about-card-label">Location</div>
-          <div class="about-card-value">
-            Ruston, LA<br>
-            <span style="font-size:12px;color:var(--ink-faint)">Targeting Raleigh, NC post-grad</span>
-          </div>
+          <div class="about-card-value">Ruston, LA<br><span style="font-size:12px;color:var(--ink-faint)">Targeting Raleigh, NC post-grad</span></div>
         </div>
         <div class="about-card">
           <div class="about-card-label">Contact</div>
           <div class="about-card-value">
             <a href="mailto:your.email@email.com">your.email@email.com</a><br>
-            <a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>
-            &nbsp;·&nbsp;
-            <a href="https://github.com/yourusername" target="_blank">GitHub</a>
-          </div>
-        </div>
-        <div class="about-card">
-          <div class="about-card-label">Currently</div>
-          <div class="about-card-value">
-            SMIF member · Financial Aid Office<br>
-            <span style="font-size:12px;color:var(--ink-faint)">Oracle SQL cert in progress</span>
+            <a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>&nbsp;·&nbsp;<a href="https://github.com/charityeiland25" target="_blank">GitHub</a>
           </div>
         </div>
       </div>
-
       <div class="about-card" style="max-width:640px;">
         <div class="about-card-label">Core skills</div>
         <div class="skill-row">
@@ -555,211 +284,341 @@
       </div>
     </div>
 
-    <!-- Status overview panels (injected by JS) -->
-    <div class="panel" id="panel-status-complete"></div>
-    <div class="panel" id="panel-status-in-progress"></div>
-    <div class="panel" id="panel-status-planned"></div>
-
-    <!-- Individual project panel -->
+    <div class="panel" id="panel-status"></div>
     <div class="panel" id="panel-project"></div>
-
+    <div class="panel" id="panel-update"></div>
   </main>
 </div>
 
 <script>
 let PROJECTS = [];
+let STATE = { view: 'home', projectSlug: null, tabId: null, updateIndex: null };
 
 const STATUS_META = {
   'complete':    { label: 'Complete',    dot: 'dot-complete',   badge: 'badge-complete',    desc: 'Finished projects I can walk you through end-to-end.' },
   'in-progress': { label: 'In progress', dot: 'dot-inprogress', badge: 'badge-in-progress', desc: 'Active builds — check back for updates.' },
-  'planned':     { label: 'Planned',     dot: 'dot-planned',    badge: 'badge-planned',     desc: 'What\'s coming next.' }
+  'planned':     { label: 'Planned',     dot: 'dot-planned',    badge: 'badge-planned',     desc: "What's coming next." }
+};
+
+const TYPE_ICONS = {
+  pdf:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`,
+  doc:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`,
+  github: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>`,
+  file:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`,
+  link:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`
 };
 
 async function init() {
   try {
     const res = await fetch('projects.json');
     PROJECTS = await res.json();
-  } catch(e) {
-    PROJECTS = [];
-  }
+  } catch(e) { PROJECTS = []; }
   buildTree();
 }
+
+function getProject(slug) { return PROJECTS.find(p => p.slug === slug); }
+
+// ── Tree builder ──────────────────────────────────────────────
 
 function buildTree() {
   const root = document.getElementById('tree-root');
   root.innerHTML = '';
 
-  // Home item
-  const homeBtn = document.createElement('button');
-  homeBtn.className = 'tree-item active';
-  homeBtn.id = 'tree-home';
-  homeBtn.textContent = '⌂  Home';
-  homeBtn.style.paddingLeft = '16px';
-  homeBtn.onclick = () => showHome();
-  root.appendChild(homeBtn);
+  const homeRow = makeRow('⌂  Home', '', 0, 'tree-home', () => showHome());
+  homeRow.classList.add('active');
+  root.appendChild(homeRow);
 
   Object.entries(STATUS_META).forEach(([status, meta]) => {
     const projects = PROJECTS.filter(p => p.status === status);
+    const folderId = `folder-status-${status}`;
+    const childId  = `children-status-${status}`;
 
-    const folder = document.createElement('div');
-    folder.className = 'tree-folder';
-
-    const btn = document.createElement('button');
-    btn.className = 'tree-folder-btn open';
-    btn.id = `folder-${status}`;
-    btn.innerHTML = `
-      <svg class="folder-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-        <polyline points="6,4 10,8 6,12"/>
-      </svg>
+    const folderRow = makeRow(null, meta.dot, 0, folderId, () => toggleEl(folderId, childId));
+    folderRow.innerHTML = `
+      <svg class="chevron open" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,4 10,8 6,12"/></svg>
       <span class="folder-dot ${meta.dot}"></span>
-      ${meta.label} <span style="color:var(--ink-faint);font-size:11px;font-weight:400;margin-left:4px">${projects.length}</span>
+      <span style="flex:1">${meta.label}</span>
+      <span style="font-size:11px;color:var(--ink-faint);font-weight:400">${projects.length}</span>
     `;
-    btn.onclick = () => toggleFolder(status);
+    root.appendChild(folderRow);
 
     const children = document.createElement('div');
     children.className = 'tree-children open';
-    children.id = `children-${status}`;
+    children.id = childId;
 
-    projects.forEach((proj, i) => {
-      const globalIndex = PROJECTS.indexOf(proj);
-      const item = document.createElement('button');
-      item.className = 'tree-item';
-      item.id = `tree-item-${globalIndex}`;
-      item.textContent = proj.title;
-      item.title = proj.title;
-      item.onclick = () => showProject(globalIndex);
-      children.appendChild(item);
+    projects.forEach(proj => {
+      const projFolderId = `folder-proj-${proj.slug}`;
+      const projChildId  = `children-proj-${proj.slug}`;
+
+      const projRow = makeRow(proj.title, '', 1, projFolderId, () => {
+        showProject(proj.slug);
+        toggleEl(projFolderId, projChildId);
+      });
+      projRow.innerHTML = `
+        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,4 10,8 6,12"/></svg>
+        <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${proj.title}</span>
+      `;
+      children.appendChild(projRow);
+
+      const projChildren = document.createElement('div');
+      projChildren.className = 'tree-children';
+      projChildren.id = projChildId;
+
+      (proj.tabs || []).forEach(tab => {
+        if (tab.type === 'updates') {
+          // Updates folder
+          const updFolderId = `folder-tab-${proj.slug}-${tab.id}`;
+          const updChildId  = `children-tab-${proj.slug}-${tab.id}`;
+
+          const tabFolderRow = makeRow(tab.label, '', 2, updFolderId, () => toggleEl(updFolderId, updChildId));
+          tabFolderRow.innerHTML = `
+            <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,4 10,8 6,12"/></svg>
+            <span>${tab.label}</span>
+          `;
+          projChildren.appendChild(tabFolderRow);
+
+          const updChildren = document.createElement('div');
+          updChildren.className = 'tree-children';
+          updChildren.id = updChildId;
+
+          const sorted = [...(tab.content || [])].sort((a,b) => b.date.localeCompare(a.date));
+          sorted.forEach((entry, i) => {
+            const treeId = `tree-update-${proj.slug}-${tab.id}-${i}`;
+            const row = makeRow(entry.title, '', 3, treeId, () => showUpdate(proj.slug, tab.id, i));
+            row.textContent = entry.title;
+            row.style.paddingLeft = '56px';
+            row.style.fontSize = '11px';
+            updChildren.appendChild(row);
+          });
+
+          projChildren.appendChild(updChildren);
+        } else {
+          // Regular tab leaf
+          const treeId = `tree-tab-${proj.slug}-${tab.id}`;
+          const tabRow = makeRow(tab.label, '', 2, treeId, () => showProject(proj.slug, tab.id));
+          tabRow.textContent = tab.label;
+          tabRow.style.paddingLeft = '42px';
+          tabRow.style.fontSize = '12px';
+          projChildren.appendChild(tabRow);
+        }
+      });
+
+      children.appendChild(projRow);
+      children.appendChild(projChildren);
     });
 
-    // If empty, show placeholder
     if (projects.length === 0) {
       const empty = document.createElement('div');
-      empty.style.cssText = 'padding:4px 16px 4px 36px;font-size:12px;color:var(--ink-faint);font-style:italic;';
+      empty.style.cssText = 'padding:4px 16px 4px 28px;font-size:12px;color:var(--ink-faint);font-style:italic;';
       empty.textContent = 'None yet';
       children.appendChild(empty);
     }
 
-    folder.appendChild(btn);
-    folder.appendChild(children);
-    root.appendChild(folder);
+    root.appendChild(children);
   });
 }
 
-function toggleFolder(status) {
-  const btn = document.getElementById(`folder-${status}`);
-  const children = document.getElementById(`children-${status}`);
-  btn.classList.toggle('open');
-  children.classList.toggle('open');
+function makeRow(text, dotClass, depth, id, onclick) {
+  const btn = document.createElement('button');
+  btn.className = `tree-row depth-${depth}`;
+  btn.id = id;
+  btn.onclick = onclick;
+  if (text) btn.textContent = text;
+  return btn;
 }
+
+function toggleEl(btnId, childId) {
+  const btn = document.getElementById(btnId);
+  const child = document.getElementById(childId);
+  if (!btn || !child) return;
+  const chevron = btn.querySelector('.chevron');
+  child.classList.toggle('open');
+  if (chevron) chevron.classList.toggle('open');
+}
+
+// ── Active tree state ─────────────────────────────────────────
 
 function setActiveTree(id) {
-  document.querySelectorAll('.tree-item, #tree-home').forEach(el => el.classList.remove('active'));
-  const el = document.getElementById(id);
-  if (el) el.classList.add('active');
+  document.querySelectorAll('.tree-row').forEach(el => el.classList.remove('active'));
+  if (id) { const el = document.getElementById(id); if (el) el.classList.add('active'); }
 }
 
-function hideAllPanels() {
+// ── Panel switcher ────────────────────────────────────────────
+
+function hideAll() {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('visible'));
-}
-
-function updateTopbarActive(status) {
   document.querySelectorAll('.topbar-link').forEach(l => l.classList.remove('active'));
 }
 
-function showHome(e) {
-  if (e) e.preventDefault();
-  hideAllPanels();
+function showHome() {
+  hideAll();
   document.getElementById('panel-home').classList.add('visible');
   setActiveTree('tree-home');
-  document.querySelectorAll('.topbar-link').forEach((l,i) => {
-    l.classList.toggle('active', i === 0);
-  });
+  document.querySelectorAll('.topbar-link')[0].classList.add('active');
 }
 
-function showStatus(e, status) {
-  if (e) e.preventDefault();
-  hideAllPanels();
-
+function showStatus(status) {
+  hideAll();
   const meta = STATUS_META[status];
   const projects = PROJECTS.filter(p => p.status === status);
-  const panelId = `panel-status-${status}`;
-  const panel = document.getElementById(panelId);
+  const panel = document.getElementById('panel-status');
 
   panel.innerHTML = `
     <div class="breadcrumb">
-      <a class="bc-link" onclick="showHome()">Home</a>
+      <span class="bc-link" onclick="showHome()">Home</span>
       <span class="bc-sep">/</span>
       <span class="bc-current">${meta.label}</span>
     </div>
-    <div class="status-header">
-      <div class="status-title">${meta.label}</div>
-      <div class="status-desc">${meta.desc}</div>
-    </div>
-    <div class="project-card-list">
+    <div class="status-title">${meta.label}</div>
+    <div class="status-desc">${meta.desc}</div>
+    <div class="proj-card-list">
       ${projects.length === 0
-        ? `<p style="color:var(--ink-faint);font-size:14px;font-style:italic;">No projects here yet — edit projects.json to add one.</p>`
-        : projects.map(proj => {
-            const idx = PROJECTS.indexOf(proj);
-            return `
-              <div class="proj-summary-card" onclick="showProject(${idx})">
-                <div class="psc-title">${proj.title}</div>
-                <div class="psc-summary">${proj.summary}</div>
-                <div class="psc-tools">${proj.tools.map(t => `<span class="psc-tool">${t}</span>`).join('')}</div>
-              </div>
-            `;
-          }).join('')
-      }
+        ? `<p style="color:var(--ink-faint);font-size:14px;font-style:italic;">No projects here yet.</p>`
+        : projects.map(p => `
+          <div class="proj-summary-card" onclick="showProject('${p.slug}')">
+            <div class="psc-title">${p.title}</div>
+            <div class="psc-summary">${p.summary}</div>
+            <div class="psc-tools">${p.tools.map(t=>`<span class="psc-tool">${t}</span>`).join('')}</div>
+          </div>`).join('')}
     </div>
   `;
 
   panel.classList.add('visible');
+  const idx = ['complete','in-progress','planned'].indexOf(status);
+  if (idx >= 0) document.querySelectorAll('.topbar-link')[idx+1].classList.add('active');
   setActiveTree(null);
-  document.querySelectorAll('.topbar-link').forEach(l => {
-    const href = l.getAttribute('onclick') || '';
-    l.classList.toggle('active', href.includes(`'${status}'`));
-  });
 }
 
-function showProject(index) {
-  hideAllPanels();
-  const proj = PROJECTS[index];
+function showProject(slug, activeTabId) {
+  hideAll();
+  const proj = getProject(slug);
+  if (!proj) return;
   const meta = STATUS_META[proj.status];
+  const tabs = proj.tabs || [];
+  const firstTab = activeTabId || (tabs[0] && tabs[0].id) || null;
+
   const panel = document.getElementById('panel-project');
 
   panel.innerHTML = `
     <div class="breadcrumb">
-      <a class="bc-link" onclick="showHome()">Home</a>
+      <span class="bc-link" onclick="showHome()">Home</span>
       <span class="bc-sep">/</span>
-      <a class="bc-link" onclick="showStatus(event,'${proj.status}')">${meta.label}</a>
+      <span class="bc-link" onclick="showStatus('${proj.status}')">${meta.label}</span>
       <span class="bc-sep">/</span>
       <span class="bc-current">${proj.title}</span>
     </div>
-    <div class="project-header">
+    <div style="display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:6px;">
       <h1 class="project-title">${proj.title}</h1>
-      <span class="status-badge ${meta.badge}">${meta.label}</span>
+      <span class="status-badge ${meta.badge}" style="margin-top:5px">${meta.label}</span>
     </div>
     <div class="project-meta-row">
-      <div class="meta-item">
-        <span class="meta-label">Role</span>
-        <span class="meta-value">${proj.role}</span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-label">Year</span>
-        <span class="meta-value">${proj.year}</span>
-      </div>
+      <div class="meta-item"><span class="meta-label">Role</span><span class="meta-value">${proj.role}</span></div>
+      <div class="meta-item"><span class="meta-label">Year</span><span class="meta-value">${proj.year}</span></div>
     </div>
-    <p class="project-summary">${proj.summary}</p>
-    <div class="tools-label">Tools & skills</div>
-    <div class="tools-row">${proj.tools.map(t => `<span class="tool-tag">${t}</span>`).join('')}</div>
-    ${proj.link ? `<a class="project-link-btn" href="${proj.link}" target="_blank" rel="noopener">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-      View project
-    </a>` : ''}
+    <div class="tools-row">${proj.tools.map(t=>`<span class="tool-tag">${t}</span>`).join('')}</div>
+    ${tabs.length > 0 ? `
+      <div class="tab-nav" id="tab-nav-${slug}">
+        ${tabs.map(tab => `<button class="tab-btn${tab.id===firstTab?' active':''}" onclick="switchTab('${slug}','${tab.id}')">${tab.label}</button>`).join('')}
+      </div>
+      <div id="tab-panes-${slug}">
+        ${tabs.map(tab => `
+          <div class="tab-pane${tab.id===firstTab?' active':''}" id="pane-${slug}-${tab.id}">
+            ${renderTabContent(proj, tab)}
+          </div>`).join('')}
+      </div>
+    ` : `<p style="color:var(--ink-muted);font-size:14px;">${proj.summary}</p>`}
   `;
 
   panel.classList.add('visible');
-  setActiveTree(`tree-item-${index}`);
-  document.querySelectorAll('.topbar-link').forEach(l => l.classList.remove('active'));
+  setActiveTree(`tree-tab-${slug}-${firstTab}` || `folder-proj-${slug}`);
+}
+
+function switchTab(slug, tabId) {
+  document.querySelectorAll(`#tab-nav-${slug} .tab-btn`).forEach(b => b.classList.remove('active'));
+  document.querySelectorAll(`#tab-panes-${slug} .tab-pane`).forEach(p => p.classList.remove('active'));
+  const btn = document.querySelector(`#tab-nav-${slug} .tab-btn[onclick*="'${tabId}'"]`);
+  if (btn) btn.classList.add('active');
+  const pane = document.getElementById(`pane-${slug}-${tabId}`);
+  if (pane) pane.classList.add('active');
+  setActiveTree(`tree-tab-${slug}-${tabId}`);
+}
+
+function renderTabContent(proj, tab) {
+  if (tab.type === 'text') {
+    return `<div class="text-content">${escHtml(tab.content)}</div>`;
+  }
+  if (tab.type === 'links') {
+    const items = tab.content || [];
+    if (items.length === 0) return `<p class="link-empty">No files added yet. Edit projects.json to add links here.</p>`;
+    return `<div class="links-list">
+      ${items.map(item => {
+        const icon = TYPE_ICONS[item.type] || TYPE_ICONS.link;
+        if (item.url) {
+          return `<a class="link-card" href="${item.url}" target="_blank" rel="noopener">
+            <div class="link-icon">${icon}</div>
+            <div class="link-info"><div class="link-title">${escHtml(item.title)}</div><div class="link-desc">${escHtml(item.description)}</div></div>
+          </a>`;
+        }
+        return `<div class="link-card" style="opacity:0.6;cursor:default;">
+          <div class="link-icon">${icon}</div>
+          <div class="link-info"><div class="link-title">${escHtml(item.title)}</div><div class="link-desc">${escHtml(item.description)} <em>(link not added yet)</em></div></div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }
+  if (tab.type === 'updates') {
+    const sorted = [...(tab.content||[])].sort((a,b)=>b.date.localeCompare(a.date));
+    if (sorted.length === 0) return `<p class="link-empty">No updates yet. Add entries in projects.json under this tab's content array.</p>`;
+    return `<div class="updates-list">
+      ${sorted.map((entry, i) => `
+        <div class="update-card" onclick="showUpdate('${proj.slug}','${tab.id}',${i})">
+          <div class="update-date">${formatDate(entry.date)}</div>
+          <div class="update-title">${escHtml(entry.title)}</div>
+        </div>`).join('')}
+    </div>`;
+  }
+  return '';
+}
+
+function showUpdate(slug, tabId, sortedIndex) {
+  hideAll();
+  const proj = getProject(slug);
+  const tab = proj.tabs.find(t => t.id === tabId);
+  const sorted = [...(tab.content||[])].sort((a,b)=>b.date.localeCompare(a.date));
+  const entry = sorted[sortedIndex];
+  const meta = STATUS_META[proj.status];
+  const panel = document.getElementById('panel-update');
+
+  panel.innerHTML = `
+    <div class="breadcrumb">
+      <span class="bc-link" onclick="showHome()">Home</span>
+      <span class="bc-sep">/</span>
+      <span class="bc-link" onclick="showStatus('${proj.status}')">${meta.label}</span>
+      <span class="bc-sep">/</span>
+      <span class="bc-link" onclick="showProject('${slug}','${tabId}')">${proj.title}</span>
+      <span class="bc-sep">/</span>
+      <span class="bc-link" onclick="showProject('${slug}','${tabId}')">${tab.label}</span>
+      <span class="bc-sep">/</span>
+      <span class="bc-current">${entry.title}</span>
+    </div>
+    <div class="update-date-lg">${formatDate(entry.date)}</div>
+    <div class="update-title-lg">${escHtml(entry.title)}</div>
+    <div class="update-body">${escHtml(entry.body)}</div>
+  `;
+
+  panel.classList.add('visible');
+  setActiveTree(`tree-update-${slug}-${tabId}-${sortedIndex}`);
+}
+
+function formatDate(dateStr) {
+  try {
+    return new Date(dateStr + 'T00:00:00').toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+  } catch(e) { return dateStr; }
+}
+
+function escHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 init();
