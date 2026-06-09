@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Charity — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:         #1C1F26;
+    --ink-muted:   #5A6070;
+    --ink-faint:   #9AA0AE;
+    --bg:          #FAFAFA;
+    --surface:     #FFFFFF;
+    --border:      #E8EAED;
+    --pink:        #D4718A;
+    --pink-light:  #FCEEF1;
+    --pink-mid:    #F2BFCA;
+    --sidebar-bg:  #F4F5F7;
+    --radius:      8px;
+    --radius-lg:   12px;
+  }
+
+  html { font-size: 16px; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Top bar ── */
+  .topbar {
+    height: 52px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    padding: 0 28px;
+    gap: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .topbar-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .topbar-divider {
+    width: 1px;
+    height: 16px;
+    background: var(--border);
+  }
+
+  .topbar-sub {
+    font-size: 13px;
+    color: var(--ink-faint);
+  }
+
+  .topbar-links {
+    margin-left: auto;
+    display: flex;
+    gap: 20px;
+  }
+
+  .topbar-link {
+    font-size: 13px;
+    color: var(--ink-muted);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.15s;
+  }
+  .topbar-link:hover { color: var(--pink); }
+  .topbar-link.active { color: var(--pink); }
+
+  /* ── Layout ── */
+  .layout {
+    display: flex;
+    flex: 1;
+  }
+
+  /* ── Sidebar / file tree ── */
+  .sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--border);
+    padding: 20px 0;
+    overflow-y: auto;
+    position: sticky;
+    top: 52px;
+    height: calc(100vh - 52px);
+  }
+
+  .tree-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-faint);
+    padding: 0 16px 8px;
+  }
+
+  .tree-folder {
+    margin-bottom: 2px;
+  }
+
+  .tree-folder-btn {
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-muted);
+    text-align: left;
+    transition: background 0.12s, color 0.12s;
+    border-radius: 0;
+  }
+  .tree-folder-btn:hover { background: var(--border); color: var(--ink); }
+  .tree-folder-btn.open { color: var(--ink); }
+
+  .folder-icon {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    transition: transform 0.15s;
+  }
+  .tree-folder-btn.open .folder-icon { transform: rotate(90deg); }
+
+  .folder-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-right: 2px;
+  }
+  .dot-complete   { background: #6DBF9F; }
+  .dot-inprogress { background: #E8A87C; }
+  .dot-planned    { background: var(--pink-mid); }
+
+  .tree-children {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.2s ease;
+  }
+  .tree-children.open { max-height: 600px; }
+
+  .tree-item {
+    display: block;
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px 16px 5px 36px;
+    font-size: 12px;
+    color: var(--ink-muted);
+    text-align: left;
+    font-family: 'Inter', system-ui, sans-serif;
+    transition: background 0.12s, color 0.12s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-radius: 0;
+  }
+  .tree-item:hover { background: var(--border); color: var(--ink); }
+  .tree-item.active {
+    background: var(--pink-light);
+    color: var(--pink);
+    font-weight: 500;
+    border-right: 2px solid var(--pink);
+  }
+
+  /* ── Main content ── */
+  .main {
+    flex: 1;
+    padding: 40px 48px;
+    min-width: 0;
+  }
+
+  /* Home / about panel */
+  .panel { display: none; }
+  .panel.visible { display: block; }
+
+  .home-greeting {
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+  }
+
+  .home-greeting span {
+    color: var(--pink);
+  }
+
+  .home-tagline {
+    font-size: 15px;
+    color: var(--ink-muted);
+    margin-bottom: 36px;
+    max-width: 520px;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: 640px;
+    margin-bottom: 36px;
+  }
+
+  .about-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 18px 20px;
+  }
+
+  .about-card-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.9px;
+    color: var(--ink-faint);
+    margin-bottom: 6px;
+  }
+
+  .about-card-value {
+    font-size: 14px;
+    color: var(--ink);
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  .about-card-value a {
+    color: var(--pink);
+    text-decoration: none;
+  }
+  .about-card-value a:hover { text-decoration: underline; }
+
+  .skill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .skill-tag {
+    font-size: 12px;
+    font-weight: 500;
+    background: var(--pink-light);
+    color: var(--pink);
+    border-radius: 4px;
+    padding: 3px 9px;
+  }
+
+  /* Project panel */
+  .project-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+
+  .project-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.2px;
+    line-height: 1.3;
+  }
+
+  .status-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .badge-complete   { background: #EAF7F1; color: #3A9A72; }
+  .badge-in-progress { background: #FEF4EC; color: #C07540; }
+  .badge-planned    { background: var(--pink-light); color: var(--pink); }
+
+  .project-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin: 20px 0;
+    padding: 16px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .meta-item { display: flex; flex-direction: column; gap: 2px; }
+
+  .meta-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.9px;
+    color: var(--ink-faint);
+  }
+
+  .meta-value {
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .project-summary {
+    font-size: 15px;
+    color: var(--ink-muted);
+    line-height: 1.75;
+    margin-bottom: 24px;
+    max-width: 640px;
+  }
+
+  .tools-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.9px;
+    color: var(--ink-faint);
+    margin-bottom: 10px;
+  }
+
+  .tools-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 28px;
+  }
+
+  .tool-tag {
+    font-size: 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--ink-muted);
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-weight: 500;
+  }
+
+  .project-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 18px;
+    background: var(--pink);
+    color: #fff;
+    border-radius: var(--radius);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .project-link-btn:hover { opacity: 0.88; }
+
+  /* Status overview panel */
+  .status-header {
+    margin-bottom: 28px;
+  }
+
+  .status-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .status-desc {
+    font-size: 14px;
+    color: var(--ink-muted);
+  }
+
+  .project-card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .proj-summary-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 18px 22px;
+    cursor: pointer;
+    transition: box-shadow 0.15s, border-color 0.15s;
+    border-left: 3px solid var(--pink);
+  }
+  .proj-summary-card:hover {
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    border-color: var(--pink-mid);
+  }
+
+  .psc-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .psc-summary {
+    font-size: 13px;
+    color: var(--ink-muted);
+    line-height: 1.55;
+    margin-bottom: 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .psc-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .psc-tool {
+    font-size: 11px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--ink-faint);
+    border-radius: 3px;
+    padding: 2px 7px;
+  }
+
+  /* Breadcrumb */
+  .breadcrumb {
+    font-size: 12px;
+    color: var(--ink-faint);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .bc-link {
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--ink-faint);
+    transition: color 0.12s;
+  }
+  .bc-link:hover { color: var(--pink); }
+  .bc-sep { color: var(--border); }
+  .bc-current { color: var(--ink-muted); }
+
+  /* Responsive */
+  @media (max-width: 720px) {
+    .sidebar { display: none; }
+    .main { padding: 28px 20px; }
+    .about-grid { grid-template-columns: 1fr; }
+    .topbar-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<header class="topbar">
+  <span class="topbar-name">Charity</span>
+  <div class="topbar-divider"></div>
+  <span class="topbar-sub">Data Analytics</span>
+  <nav class="topbar-links">
+    <a href="#" class="topbar-link active" onclick="showHome(event)">Home</a>
+    <a href="#" class="topbar-link" onclick="showStatus(event,'complete')">Complete</a>
+    <a href="#" class="topbar-link" onclick="showStatus(event,'in-progress')">In progress</a>
+    <a href="#" class="topbar-link" onclick="showStatus(event,'planned')">Planned</a>
+  </nav>
+</header>
+
+<div class="layout">
+
+  <!-- Sidebar file tree -->
+  <nav class="sidebar" id="sidebar">
+    <div class="tree-label">Projects</div>
+    <div id="tree-root"></div>
+  </nav>
+
+  <!-- Main content -->
+  <main class="main" id="main-content">
+
+    <!-- Home panel -->
+    <div class="panel visible" id="panel-home">
+      <div class="home-greeting">Hi, I'm <span>Charity.</span></div>
+      <p class="home-tagline">
+        Junior at Louisiana Tech studying Computer Information Systems with a Data Analytics certification.
+        I build pipelines, find patterns in data, and turn raw numbers into something useful.
+      </p>
+
+      <div class="about-grid">
+        <div class="about-card">
+          <div class="about-card-label">Education</div>
+          <div class="about-card-value">
+            B.S. Computer Information Systems<br>
+            <span style="font-size:12px;color:var(--ink-faint)">Louisiana Tech · Expected May 2027</span>
+          </div>
+        </div>
+        <div class="about-card">
+          <div class="about-card-label">Location</div>
+          <div class="about-card-value">
+            Ruston, LA<br>
+            <span style="font-size:12px;color:var(--ink-faint)">Targeting Raleigh, NC post-grad</span>
+          </div>
+        </div>
+        <div class="about-card">
+          <div class="about-card-label">Contact</div>
+          <div class="about-card-value">
+            <a href="mailto:your.email@email.com">your.email@email.com</a><br>
+            <a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>
+            &nbsp;·&nbsp;
+            <a href="https://github.com/yourusername" target="_blank">GitHub</a>
+          </div>
+        </div>
+        <div class="about-card">
+          <div class="about-card-label">Currently</div>
+          <div class="about-card-value">
+            SMIF member · Financial Aid Office<br>
+            <span style="font-size:12px;color:var(--ink-faint)">Oracle SQL cert in progress</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-card" style="max-width:640px;">
+        <div class="about-card-label">Core skills</div>
+        <div class="skill-row">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">SQL</span>
+          <span class="skill-tag">Excel</span>
+          <span class="skill-tag">Data pipelines</span>
+          <span class="skill-tag">Financial analysis</span>
+          <span class="skill-tag">Pandas</span>
+          <span class="skill-tag">KPI reporting</span>
+          <span class="skill-tag">Data cleaning</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status overview panels (injected by JS) -->
+    <div class="panel" id="panel-status-complete"></div>
+    <div class="panel" id="panel-status-in-progress"></div>
+    <div class="panel" id="panel-status-planned"></div>
+
+    <!-- Individual project panel -->
+    <div class="panel" id="panel-project"></div>
+
+  </main>
+</div>
+
+<script>
+let PROJECTS = [];
+
+const STATUS_META = {
+  'complete':    { label: 'Complete',    dot: 'dot-complete',   badge: 'badge-complete',    desc: 'Finished projects I can walk you through end-to-end.' },
+  'in-progress': { label: 'In progress', dot: 'dot-inprogress', badge: 'badge-in-progress', desc: 'Active builds — check back for updates.' },
+  'planned':     { label: 'Planned',     dot: 'dot-planned',    badge: 'badge-planned',     desc: 'What\'s coming next.' }
+};
+
+async function init() {
+  try {
+    const res = await fetch('projects.json');
+    PROJECTS = await res.json();
+  } catch(e) {
+    PROJECTS = [];
+  }
+  buildTree();
+}
+
+function buildTree() {
+  const root = document.getElementById('tree-root');
+  root.innerHTML = '';
+
+  // Home item
+  const homeBtn = document.createElement('button');
+  homeBtn.className = 'tree-item active';
+  homeBtn.id = 'tree-home';
+  homeBtn.textContent = '⌂  Home';
+  homeBtn.style.paddingLeft = '16px';
+  homeBtn.onclick = () => showHome();
+  root.appendChild(homeBtn);
+
+  Object.entries(STATUS_META).forEach(([status, meta]) => {
+    const projects = PROJECTS.filter(p => p.status === status);
+
+    const folder = document.createElement('div');
+    folder.className = 'tree-folder';
+
+    const btn = document.createElement('button');
+    btn.className = 'tree-folder-btn open';
+    btn.id = `folder-${status}`;
+    btn.innerHTML = `
+      <svg class="folder-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <polyline points="6,4 10,8 6,12"/>
+      </svg>
+      <span class="folder-dot ${meta.dot}"></span>
+      ${meta.label} <span style="color:var(--ink-faint);font-size:11px;font-weight:400;margin-left:4px">${projects.length}</span>
+    `;
+    btn.onclick = () => toggleFolder(status);
+
+    const children = document.createElement('div');
+    children.className = 'tree-children open';
+    children.id = `children-${status}`;
+
+    projects.forEach((proj, i) => {
+      const globalIndex = PROJECTS.indexOf(proj);
+      const item = document.createElement('button');
+      item.className = 'tree-item';
+      item.id = `tree-item-${globalIndex}`;
+      item.textContent = proj.title;
+      item.title = proj.title;
+      item.onclick = () => showProject(globalIndex);
+      children.appendChild(item);
+    });
+
+    // If empty, show placeholder
+    if (projects.length === 0) {
+      const empty = document.createElement('div');
+      empty.style.cssText = 'padding:4px 16px 4px 36px;font-size:12px;color:var(--ink-faint);font-style:italic;';
+      empty.textContent = 'None yet';
+      children.appendChild(empty);
+    }
+
+    folder.appendChild(btn);
+    folder.appendChild(children);
+    root.appendChild(folder);
+  });
+}
+
+function toggleFolder(status) {
+  const btn = document.getElementById(`folder-${status}`);
+  const children = document.getElementById(`children-${status}`);
+  btn.classList.toggle('open');
+  children.classList.toggle('open');
+}
+
+function setActiveTree(id) {
+  document.querySelectorAll('.tree-item, #tree-home').forEach(el => el.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+}
+
+function hideAllPanels() {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('visible'));
+}
+
+function updateTopbarActive(status) {
+  document.querySelectorAll('.topbar-link').forEach(l => l.classList.remove('active'));
+}
+
+function showHome(e) {
+  if (e) e.preventDefault();
+  hideAllPanels();
+  document.getElementById('panel-home').classList.add('visible');
+  setActiveTree('tree-home');
+  document.querySelectorAll('.topbar-link').forEach((l,i) => {
+    l.classList.toggle('active', i === 0);
+  });
+}
+
+function showStatus(e, status) {
+  if (e) e.preventDefault();
+  hideAllPanels();
+
+  const meta = STATUS_META[status];
+  const projects = PROJECTS.filter(p => p.status === status);
+  const panelId = `panel-status-${status}`;
+  const panel = document.getElementById(panelId);
+
+  panel.innerHTML = `
+    <div class="breadcrumb">
+      <a class="bc-link" onclick="showHome()">Home</a>
+      <span class="bc-sep">/</span>
+      <span class="bc-current">${meta.label}</span>
+    </div>
+    <div class="status-header">
+      <div class="status-title">${meta.label}</div>
+      <div class="status-desc">${meta.desc}</div>
+    </div>
+    <div class="project-card-list">
+      ${projects.length === 0
+        ? `<p style="color:var(--ink-faint);font-size:14px;font-style:italic;">No projects here yet — edit projects.json to add one.</p>`
+        : projects.map(proj => {
+            const idx = PROJECTS.indexOf(proj);
+            return `
+              <div class="proj-summary-card" onclick="showProject(${idx})">
+                <div class="psc-title">${proj.title}</div>
+                <div class="psc-summary">${proj.summary}</div>
+                <div class="psc-tools">${proj.tools.map(t => `<span class="psc-tool">${t}</span>`).join('')}</div>
+              </div>
+            `;
+          }).join('')
+      }
+    </div>
+  `;
+
+  panel.classList.add('visible');
+  setActiveTree(null);
+  document.querySelectorAll('.topbar-link').forEach(l => {
+    const href = l.getAttribute('onclick') || '';
+    l.classList.toggle('active', href.includes(`'${status}'`));
+  });
+}
+
+function showProject(index) {
+  hideAllPanels();
+  const proj = PROJECTS[index];
+  const meta = STATUS_META[proj.status];
+  const panel = document.getElementById('panel-project');
+
+  panel.innerHTML = `
+    <div class="breadcrumb">
+      <a class="bc-link" onclick="showHome()">Home</a>
+      <span class="bc-sep">/</span>
+      <a class="bc-link" onclick="showStatus(event,'${proj.status}')">${meta.label}</a>
+      <span class="bc-sep">/</span>
+      <span class="bc-current">${proj.title}</span>
+    </div>
+    <div class="project-header">
+      <h1 class="project-title">${proj.title}</h1>
+      <span class="status-badge ${meta.badge}">${meta.label}</span>
+    </div>
+    <div class="project-meta-row">
+      <div class="meta-item">
+        <span class="meta-label">Role</span>
+        <span class="meta-value">${proj.role}</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Year</span>
+        <span class="meta-value">${proj.year}</span>
+      </div>
+    </div>
+    <p class="project-summary">${proj.summary}</p>
+    <div class="tools-label">Tools & skills</div>
+    <div class="tools-row">${proj.tools.map(t => `<span class="tool-tag">${t}</span>`).join('')}</div>
+    ${proj.link ? `<a class="project-link-btn" href="${proj.link}" target="_blank" rel="noopener">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      View project
+    </a>` : ''}
+  `;
+
+  panel.classList.add('visible');
+  setActiveTree(`tree-item-${index}`);
+  document.querySelectorAll('.topbar-link').forEach(l => l.classList.remove('active'));
+}
+
+init();
+</script>
+</body>
+</html>

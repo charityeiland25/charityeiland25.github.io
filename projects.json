@@ -1,0 +1,38 @@
+[
+  {
+    "status": "complete",
+    "title": "FIRST Louisiana-Mississippi Information System",
+    "summary": "Designed and built a relational database system to manage team data, event scheduling, and registration across the LA-MS FIRST Robotics region.",
+    "tools": ["SQL", "ER Modeling", "Database Design", "Data Normalization"],
+    "role": "Solo — CIS coursework",
+    "year": "2024",
+    "link": ""
+  },
+  {
+    "status": "complete",
+    "title": "Lending Club Loan Analysis",
+    "summary": "Analyzed a 10k+ row loan dataset to identify default risk patterns and borrower profiles using pivot tables, dashboards, and summary charts.",
+    "tools": ["Excel", "Pivot Tables", "Financial Analysis", "Data Visualization"],
+    "role": "Solo analyst",
+    "year": "2024",
+    "link": ""
+  },
+  {
+    "status": "in-progress",
+    "title": "Robotics Matchmaking Data Pipeline",
+    "summary": "End-to-end Python pipeline ingesting live match data from The Blue Alliance API for the Arkansas Regional FIRST competition. Outputs SQL-ready tables and KPI reports.",
+    "tools": ["Python", "Pandas", "REST API", "SQL", "KPI Design"],
+    "role": "Solo — summer project",
+    "year": "2025",
+    "link": ""
+  },
+  {
+    "status": "planned",
+    "title": "Your next project title here",
+    "summary": "Describe what you're planning to build or learn. This is a placeholder — edit projects.json to replace it.",
+    "tools": ["Add", "Your", "Tools"],
+    "role": "Your role",
+    "year": "2026",
+    "link": ""
+  }
+]
